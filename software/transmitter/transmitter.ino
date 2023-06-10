@@ -51,18 +51,16 @@ void setup()
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
-
-  pinMode(BTN_1, INPUT_PULLUP);
-  pinMode(BTN_2, INPUT_PULLUP);
-  pinMode(LED, OUTPUT);
-
   // Show initial display buffer contents on the screen --
   // the library initializes this with an Adafruit splash screen.
   display.display();
   delay(500);
-
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
+
+  pinMode(BTN_1, INPUT_PULLUP);
+  pinMode(BTN_2, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
 }
 
 void loop()
@@ -75,19 +73,16 @@ void loop()
     currentPacket.channel = (currentPacket.channel + 1) % rows;
     Serial.print("Selected Channel: ");
     Serial.println(currentPacket.channel);
-
     strcpy_P(buffer, (char *)pgm_read_word(&(desc[currentPacket.channel])));  // Necessary casts and dereferencing, just copy.
-
-    
     memory_btn_flag = true;
-  } else if (btn == HIGH) {
-    memory_btn_flag = false;
-  }
   
   display.clearDisplay();
   display.setCursor(0, 0);
   display.println(buffer);
   display.display();
+  } else if (btn == HIGH) {
+    memory_btn_flag = false;
+  }
   
   // Compare with the previous packet
   if (memcmp(&currentPacket, &previousPacket, sizeof(DataPacket)) != 0) {
