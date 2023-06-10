@@ -31,6 +31,19 @@ struct DataPacket {
   int value;
 };
 
+void setLEDs(CRGB* leds, int numLeds, int scaledValue, CRGB color) {
+  for (int i = 0; i < numLeds; i++) {
+    if (i < scaledValue) {
+      leds[i] = color;
+    } else {
+      leds[i] = CRGB::Black;
+    }
+  }
+  int brightness = map(analogRead(A1), 0, 1023, 0, 255);
+  FastLED.setBrightness(brightness);
+  FastLED.show();
+}
+
 template <uint8_t DATA_PIN>
 void setupLeds(CRGB* leds, int numLeds) {
   FastLED.addLeds<WS2812, DATA_PIN, GRB>(leds, numLeds);
@@ -51,8 +64,6 @@ void setup()
 
 void loop()
 {
-  int brightness = map(analogRead(A1), 0, 1023, 0, 255);
-  FastLED.setBrightness(brightness);
 
   uint8_t buf[RH_ASK_MAX_MESSAGE_LEN];
   uint8_t buflen = sizeof(buf);
@@ -67,50 +78,13 @@ void loop()
 
       // Get potentiometer value
       int scaledValue = packet.value;
-      analogWrite(DATA_PIN_CE, scaledValue); 
-       
-      // Turn on first n LEDs
-      for (int i = 0; i < NUM_LEDS_CE; i++) {
-        if (i < scaledValue) {
-          leds_CE[i] = CRGB::Green;
-        } else {
-          leds_CE[i] = CRGB::Black;
-        }
-        FastLED.show();
-      }
-
-      // Turn on first n LEDs
-      for (int i = 0; i < NUM_LEDS_JB; i++) {
-        if (i < scaledValue) {
-          leds_JB[i] = CRGB::Blue;
-        } else {
-          leds_JB[i] = CRGB::Black;
-        }
-        FastLED.show();
-      }   
-
-      // Turn on first n LEDs
-      for (int i = 0; i < NUM_LEDS_LB; i++) {
-        if (i < scaledValue) {
-          leds_LB[i] = CRGB::Red;
-        } else {
-          leds_LB[i] = CRGB::Black;
-        }
-      FastLED.show();
-      }
-
-      // Turn on first n LEDs
-      for (int i = 0; i < NUM_LEDS_SA; i++) {
-        if (i < scaledValue) {
-          leds_SA[i] = CRGB::Yellow;
-        } else {
-          leds_SA[i] = CRGB::Black;
-        }
-      FastLED.show();
-      }   
+      analogWrite(DATA_PIN_CE, scaledValue);
+      setLEDs(leds_CE, NUM_LEDS_CE, scaledValue, CRGB::Green);
+      setLEDs(leds_JB, NUM_LEDS_JB, scaledValue, CRGB::Blue);
+      setLEDs(leds_LB, NUM_LEDS_LB, scaledValue, CRGB::Red);
+      setLEDs(leds_SA, NUM_LEDS_SA, scaledValue, CRGB::Yellow);
     }
   }
-  delay(10); // Delay between brightness changes (adjust as needed)
 }
 
 void displayPacket(DataPacket packet) {
