@@ -1,14 +1,17 @@
-#include <RH_ASK.h>
 #include <SPI.h> // Not actualy used but needed to compile
+#include <avr/pgmspace.h>
+#include "spectacle.h"
+
+// Init RadioHead for transmission
+#include <RH_ASK.h>
+RH_ASK driver;
+
+// Init FastLED
 #include<FastLED.h>
-
 #define BRIGHTNESS 16 // Adjust this value to change the brightness (0-255)
-
 #define NUM_LEDS_CE 3
 #define DATA_PIN_CE 12
 CRGB leds[NUM_LEDS_CE];
-
-RH_ASK driver;
 
 struct DataPacket {
   int channel;

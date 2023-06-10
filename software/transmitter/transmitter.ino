@@ -1,6 +1,5 @@
 #include <SPI.h> // Not actually used but needed to compile
 #include <avr/pgmspace.h>
-//#include <Wire.h>
 #include "spectacle.h"
 
 // Init RadioHead for transmission
