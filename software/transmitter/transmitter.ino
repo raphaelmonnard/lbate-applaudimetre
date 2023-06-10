@@ -16,6 +16,9 @@ RH_ASK driver;
 #define OLED_RESET -1 // Reset pin # (or -1 if sharing Arduino reset pin)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
+unsigned long activationTime = 0;
+const unsigned long activationDuration = 5000;
+
 #define BTN_1 4
 #define BTN_2 5
 #define LED 6
@@ -76,10 +79,11 @@ void loop()
     strcpy_P(buffer, (char *)pgm_read_word(&(desc[currentPacket.channel])));  // Necessary casts and dereferencing, just copy.
     memory_btn_flag = true;
   
-  display.clearDisplay();
-  display.setCursor(0, 0);
-  display.println(buffer);
-  display.display();
+    activationTime = millis();  // Record the time when the button is pressed
+    display.clearDisplay();
+    display.setCursor(0, 0);
+    display.println(buffer);
+    display.display();
   } else if (btn == HIGH) {
     memory_btn_flag = false;
   }
@@ -93,5 +97,11 @@ void loop()
     
     // Update the previous packet
     memcpy(&previousPacket, &currentPacket, sizeof(DataPacket));
+  }
+
+  // Check if activation duration has passed
+  if (millis() - activationTime >= activationDuration) {
+    display.clearDisplay();  // Deactivate the screen
+    display.display();
   }
 }
