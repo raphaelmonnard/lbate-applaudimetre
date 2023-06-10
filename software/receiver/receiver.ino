@@ -8,10 +8,23 @@ RH_ASK driver;
 
 // Init FastLED
 #include<FastLED.h>
-#define BRIGHTNESS 16 // Adjust this value to change the brightness (0-255)
+
 #define NUM_LEDS_CE 3
-#define DATA_PIN_CE 12
-CRGB leds[NUM_LEDS_CE];
+#define DATA_PIN_CE 4
+
+#define NUM_LEDS_JB 3
+#define DATA_PIN_JB 7
+
+#define NUM_LEDS_LB 3
+#define DATA_PIN_LB 8
+
+#define NUM_LEDS_SA 3
+#define DATA_PIN_SA 12
+
+CRGB leds_CE[NUM_LEDS_CE];
+CRGB leds_JB[NUM_LEDS_JB];
+CRGB leds_LB[NUM_LEDS_LB];
+CRGB leds_SA[NUM_LEDS_SA];
 
 struct DataPacket {
   int channel;
@@ -24,8 +37,17 @@ void setup()
     if (!driver.init())
          Serial.println("init failed");
          
-    FastLED.addLeds<WS2812, DATA_PIN_CE, RGB>(leds, NUM_LEDS_CE);
-    pinMode(DATA_PIN_CE, OUTPUT); // set pin mode to output
+    FastLED.addLeds<WS2812, DATA_PIN_CE, RGB>(leds_CE, NUM_LEDS_CE);
+    pinMode(DATA_PIN_CE, OUTPUT);
+
+    FastLED.addLeds<WS2812, DATA_PIN_JB, RGB>(leds_JB, NUM_LEDS_JB);
+    pinMode(DATA_PIN_JB, OUTPUT);
+
+    FastLED.addLeds<WS2812, DATA_PIN_LB, RGB>(leds_LB, NUM_LEDS_LB);
+    pinMode(DATA_PIN_LB, OUTPUT);
+
+    FastLED.addLeds<WS2812, DATA_PIN_SA, RGB>(leds_SA, NUM_LEDS_SA);
+    pinMode(DATA_PIN_SA, OUTPUT);
 }
 
 void loop()
@@ -51,14 +73,44 @@ void loop()
       // Turn on first n LEDs
       for (int i = 0; i < NUM_LEDS_CE; i++) {
         if (i < scaledValue) {
-          leds[i] = CRGB::Green;
+          leds_CE[i] = CRGB::Green;
         } else {
-          leds[i] = CRGB::Black;
+          leds_CE[i] = CRGB::Black;
         }
+        FastLED.show();
       }
+
+      // Turn on first n LEDs
+      for (int i = 0; i < NUM_LEDS_JB; i++) {
+        if (i < scaledValue) {
+          leds_JB[i] = CRGB::Blue;
+        } else {
+          leds_JB[i] = CRGB::Black;
+        }
+        FastLED.show();
+      }   
+
+      // Turn on first n LEDs
+      for (int i = 0; i < NUM_LEDS_LB; i++) {
+        if (i < scaledValue) {
+          leds_LB[i] = CRGB::Red;
+        } else {
+          leds_LB[i] = CRGB::Black;
+        }
+      FastLED.show();
+      }
+
+      // Turn on first n LEDs
+      for (int i = 0; i < NUM_LEDS_SA; i++) {
+        if (i < scaledValue) {
+          leds_SA[i] = CRGB::Yellow;
+        } else {
+          leds_SA[i] = CRGB::Black;
+        }
+      FastLED.show();
+      }   
     }
   }
-  FastLED.show(); // update LEDs
   delay(10); // Delay between brightness changes (adjust as needed)
 }
 
