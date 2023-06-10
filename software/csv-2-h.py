@@ -1,7 +1,12 @@
 import csv
+import os
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 csv_file = "spectacle.csv"
-header_file = "06_transmitter/spectacle.h"
+header_files = [
+    "./receiver/spectacle.h",
+    "./transmitter/spectacle.h"
+]
 
 bool_array = []
 string_array = []
@@ -32,17 +37,18 @@ desc_array_elements = []
 for index, row in enumerate(string_array):
     desc_var_name = f"desc_{index}"
     desc_value = row[0]
-    desc_line = f'const char {desc_var_name}[] = "{desc_value}";'
+    desc_line = f'const char {desc_var_name}[] PROGMEM = "{desc_value}";'
     desc_lines.append(desc_line)
     desc_array_elements.append(desc_var_name)
 
 desc_array = ",\n  ".join(desc_array_elements)
-desc_array_code = f"const char* const desc[] = {{\n  {desc_array}\n}};"
+desc_array_code = f"\nconst char *const desc[] PROGMEM = {{\n  {desc_array}\n}};"
 
 final_code = header_content + "\n".join(desc_lines + [desc_array_code])
 
 # Write the header file
-with open(header_file, 'w') as file:
-    file.write(final_code)
+for file in header_files:
+    with open(file, 'w') as file:
+        file.write(final_code)
 
-print("Conversion complete. Header file '{}' has been generated.".format(header_file))
+    print("Conversion complete. Header file '{}' has been generated.".format(file))
