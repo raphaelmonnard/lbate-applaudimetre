@@ -41,16 +41,11 @@ void loop()
       memcpy(&packet, buf, sizeof(packet));
       // Process the received packet
       displayPacket(packet);
-    }
-  }
-
-    //Serial.print("Mic Value:");
-    // Serial.println(analogRead(A0));
 
     // Get potentiometer value
-    int scaledValue = round(analogRead(A1)/1024.0*3.0);
-    // Serial.println(scaledValue);
+      int scaledValue = packet.value;
     analogWrite(DATA_PIN_CE, scaledValue);    
+       
     // Turn on first n LEDs
     for (int i = 0; i < NUM_LEDS_CE; i++) {
       if (i < scaledValue) {
@@ -60,6 +55,8 @@ void loop()
       }
     }
     FastLED.show(); // update LEDs
+    }
+  }
 }
 
 void displayPacket(DataPacket packet) {
