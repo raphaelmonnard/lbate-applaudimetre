@@ -84,9 +84,7 @@ void loop()
   } else if (btn == HIGH) {
     memory_btn_flag = false;
   }
-
-  Serial.println(buffer);
-
+  
   display.clearDisplay();
   display.setCursor(0, 0);
   display.println(buffer);
