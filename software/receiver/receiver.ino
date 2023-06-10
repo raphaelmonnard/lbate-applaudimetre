@@ -46,7 +46,7 @@ void setLEDs(CRGB* leds, int numLeds, int scaledValue, CRGB color) {
 
 template <uint8_t DATA_PIN>
 void setupLeds(CRGB* leds, int numLeds) {
-  FastLED.addLeds<WS2812, DATA_PIN, GRB>(leds, numLeds);
+  FastLED.addLeds<WS2812, DATA_PIN, RGB>(leds, numLeds);
   pinMode(DATA_PIN, OUTPUT);
 }
 
