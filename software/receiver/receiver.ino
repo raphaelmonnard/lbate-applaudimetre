@@ -11,43 +11,42 @@ RH_ASK driver;
 
 #define NUM_LEDS_CE 3
 #define DATA_PIN_CE 4
+CRGB leds_CE[NUM_LEDS_CE];
 
 #define NUM_LEDS_JB 3
 #define DATA_PIN_JB 7
+CRGB leds_JB[NUM_LEDS_JB];
 
 #define NUM_LEDS_LB 3
 #define DATA_PIN_LB 8
+CRGB leds_LB[NUM_LEDS_LB];
 
 #define NUM_LEDS_SA 3
 #define DATA_PIN_SA 12
-
-CRGB leds_CE[NUM_LEDS_CE];
-CRGB leds_JB[NUM_LEDS_JB];
-CRGB leds_LB[NUM_LEDS_LB];
 CRGB leds_SA[NUM_LEDS_SA];
+
 
 struct DataPacket {
   int channel;
   int value;
 };
 
+template <uint8_t DATA_PIN>
+void setupLeds(CRGB* leds, int numLeds) {
+  FastLED.addLeds<WS2812, DATA_PIN, GRB>(leds, numLeds);
+  pinMode(DATA_PIN, OUTPUT);
+}
+
 void setup()
 {
     Serial.begin(9600);	// Debugging only
     if (!driver.init())
          Serial.println("init failed");
-         
-    FastLED.addLeds<WS2812, DATA_PIN_CE, RGB>(leds_CE, NUM_LEDS_CE);
-    pinMode(DATA_PIN_CE, OUTPUT);
 
-    FastLED.addLeds<WS2812, DATA_PIN_JB, RGB>(leds_JB, NUM_LEDS_JB);
-    pinMode(DATA_PIN_JB, OUTPUT);
-
-    FastLED.addLeds<WS2812, DATA_PIN_LB, RGB>(leds_LB, NUM_LEDS_LB);
-    pinMode(DATA_PIN_LB, OUTPUT);
-
-    FastLED.addLeds<WS2812, DATA_PIN_SA, RGB>(leds_SA, NUM_LEDS_SA);
-    pinMode(DATA_PIN_SA, OUTPUT);
+  setupLeds<DATA_PIN_CE>(leds_CE, NUM_LEDS_CE);
+  setupLeds<DATA_PIN_JB>(leds_JB, NUM_LEDS_JB);
+  setupLeds<DATA_PIN_LB>(leds_LB, NUM_LEDS_LB);
+  setupLeds<DATA_PIN_SA>(leds_SA, NUM_LEDS_SA);
 }
 
 void loop()
