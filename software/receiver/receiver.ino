@@ -25,12 +25,14 @@ void setup()
          Serial.println("init failed");
          
     FastLED.addLeds<WS2812, DATA_PIN_CE, RGB>(leds, NUM_LEDS_CE);
-    FastLED.setBrightness(BRIGHTNESS);
     pinMode(DATA_PIN_CE, OUTPUT); // set pin mode to output
 }
 
 void loop()
 {
+  int brightness = map(analogRead(A1), 0, 1023, 0, 255);
+  FastLED.setBrightness(brightness);
+
   uint8_t buf[RH_ASK_MAX_MESSAGE_LEN];
   uint8_t buflen = sizeof(buf);
   if (driver.recv(buf, &buflen)) {
@@ -42,21 +44,22 @@ void loop()
       // Process the received packet
       displayPacket(packet);
 
-    // Get potentiometer value
+      // Get potentiometer value
       int scaledValue = packet.value;
-    analogWrite(DATA_PIN_CE, scaledValue);    
+      analogWrite(DATA_PIN_CE, scaledValue); 
        
-    // Turn on first n LEDs
-    for (int i = 0; i < NUM_LEDS_CE; i++) {
-      if (i < scaledValue) {
-        leds[i] = CRGB::Green;
-      } else {
-        leds[i] = CRGB::Black;
+      // Turn on first n LEDs
+      for (int i = 0; i < NUM_LEDS_CE; i++) {
+        if (i < scaledValue) {
+          leds[i] = CRGB::Green;
+        } else {
+          leds[i] = CRGB::Black;
+        }
       }
     }
-    FastLED.show(); // update LEDs
-    }
   }
+  FastLED.show(); // update LEDs
+  delay(10); // Delay between brightness changes (adjust as needed)
 }
 
 void displayPacket(DataPacket packet) {
