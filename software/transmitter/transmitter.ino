@@ -69,7 +69,7 @@ void setup()
 void loop()
 {
   // Update the current packet
-  currentPacket.value = map(analogRead(A1), 0, 1023, 0, 3); // Example analog value
+  currentPacket.value = map(analogRead(A1), 0, 1000, 0, 3); // Example analog value
     
   btn = digitalRead(BTN_1);
   if (btn == LOW && !memory_btn_flag) {
