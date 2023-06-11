@@ -10,19 +10,19 @@ RH_ASK driver;
 #include<FastLED.h>
 
 #define NUM_LEDS_CE 3
-#define DATA_PIN_CE 4
+#define DATA_PIN_CE 2
 CRGB leds_CE[NUM_LEDS_CE];
 
 #define NUM_LEDS_JB 3
-#define DATA_PIN_JB 7
+#define DATA_PIN_JB 3
 CRGB leds_JB[NUM_LEDS_JB];
 
 #define NUM_LEDS_LB 3
-#define DATA_PIN_LB 8
+#define DATA_PIN_LB 4
 CRGB leds_LB[NUM_LEDS_LB];
 
 #define NUM_LEDS_SA 3
-#define DATA_PIN_SA 12
+#define DATA_PIN_SA 5
 CRGB leds_SA[NUM_LEDS_SA];
 
 
@@ -30,6 +30,9 @@ struct DataPacket {
   int channel;
   int value;
 };
+
+int mic;
+int micSensitivity = 512;
 
 void setLEDs(CRGB* leds, int numLeds, int scaledValue, CRGB color) {
   for (int i = 0; i < numLeds; i++) {
@@ -64,7 +67,7 @@ void setup()
 
 void loop()
 {
-
+  mic = map(analogRead(A0), 0, micSensitivity, 0, 100);
   uint8_t buf[RH_ASK_MAX_MESSAGE_LEN];
   uint8_t buflen = sizeof(buf);
   if (driver.recv(buf, &buflen)) {
@@ -78,7 +81,6 @@ void loop()
 
       // Get potentiometer value
       int scaledValue = packet.value;
-      analogWrite(DATA_PIN_CE, scaledValue);
       setLEDs(leds_CE, NUM_LEDS_CE, scaledValue, CRGB::Green);
       setLEDs(leds_JB, NUM_LEDS_JB, scaledValue, CRGB::Blue);
       setLEDs(leds_LB, NUM_LEDS_LB, scaledValue, CRGB::Red);
