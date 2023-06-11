@@ -9,6 +9,7 @@ header_files = [
 ]
 
 bool_array = []
+int_array = []
 string_array = []
 
 # Read the CSV file
@@ -17,18 +18,22 @@ with open(csv_file, 'r') as file:
     next(reader)  # Skip the header row
     
     for row in reader:
-        bool_array.append([value.lower() for value in row[3:]])
+        bool_array.append([value.lower() for value in row[3:7]])
+        int_array.append(row[7:9])
         string_array.append([row[1]])
 
 # Generate the header file content
 header_content = ""
-header_content += "const bool stripes[{}][{}] = ".format(len(bool_array), len(bool_array[0]))
-header_content += "{\n"
-for row in bool_array:
-    header_content += "    {"
-    header_content += ", ".join(str(value) for value in row)
-    header_content += "},\n"
-header_content += "};\n\n"
+
+# Generate the bool table
+header_content += "const bool stripes[{}][{}] = {{\n".format(len(bool_array), len(bool_array[0]))
+header_content += ",\n".join("    {" + ",".join(str(value) for value in row) + "}" for row in bool_array)
+header_content += "\n};\n\n"
+
+# Generate the int table
+header_content += "const int params[{}][{}] = {{\n".format(len(int_array), len(int_array[0]))
+header_content += ",\n".join("    {" + ",".join(str(value) for value in row) + "}" for row in int_array)
+header_content += "\n};\n\n"
 
 # Generate the optimized desc table code
 desc_lines = []
