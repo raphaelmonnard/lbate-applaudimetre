@@ -1,38 +1,38 @@
-sort,timing,description, LB, CE, JB, Sammy
-0,Introduction,random LEDs., false, false, false, false
-1,The way you look tonight - avant solo sax,"Explosion, les lumières de l’applaudimètre s’allument.", false, false, false, false
-2,The way you look tonight - fin,Applaudissements, false, false, false, false
-3,"Et en plus, l’applaudimètre fonctionne... c’est super !",Faire qu'il s'allume après la réplique, false, false, false, false
-4,"En bleu, notre guitariste : Jean-Baptiste De La Touche...","Applaudissements, la colonne bleue s’allume", false, false, false, false
-5,"En vert, notre saxophoniste : Charles Edouard von Bourdon...","Applaudissements, la colonne verte s’allume", false, false, false, false
-6,"Et en rose, notre chanteue : Lady Bee !","Applaudissements, la colonne rose s’allume", false, false, false, false
-7,"Et en jaune, notre contrebassiste : Sammy l’Asticot",Petit clignotement jaune, false, false, false, false
-8,Vous avez compris ?,Les lumières s’allument à fond., false, false, false, false
-9,Swingy Lady,"L’applaudimètre est très haut, pour les quatre - mais pas à fonds", false, false, false, false
-10,Vous l’avez trouvée comment notre chanson ?,"Le public applaudit, l’applaudimètre monte encore un peu", false, false, false, false
-11,"Et nos musiciens, vous les avez trouvé comment ?","Même jeu, l’applaudimètre monte encore pour les musiciens", false, false, false, false
-12,Et notre chanteuse ? Elle est comment ?,"Même jeu, l’applaudimètre atteint le, false, false, false, false
-sommet - surtout le rose", false, false, false, false
-13,Don’t Get Around Much Anymore,Applaudissements - L’applaudimètre est au maximum, false, false, false, false
-14,En retards,Applaudissements, false, false, false, false
-15,Perhaps,Applaudissements, false, false, false, false
-16,No moon at all,Applaudissements, false, false, false, false
-17,Makin’ Whoopee,Applaudissements, false, false, false, false
-18,Jeunes mariés / papa / maman / ...,Applaudissements - mode manuel, false, false, false, false
-19,Sunday Morning Blues,Applaudissements, false, false, false, false
-20,St. James Infirmary,Applaudissements - très faibles, false, false, false, false
-21,Devil May care,Applaudissements, false, false, false, false
-22,Le temps du muguet,Applaudissements, false, false, false, false
-23,"Allez les fans de l’été, on applaudit !.","Applaudissements, la colonne bleue s’allume", false, false, false, false
-24,"Maintenant, on applaudit pour l’automne !","Applaudissements, la colonne verte s’allume", false, false, false, false
-25,Qui applaudit l’hiver ?,Petite marque jaune, false, false, false, false
-26,"Alors, qui vote pour le printemps ?!",Immense score rose, false, false, false, false
-27,Lullaby of Birdland,Applaudissements, false, false, false, false
-28,Poupette song,Applaudissements, false, false, false, false
-29,On applaudit pour l’oiseau ?,"Applaudissements, la colonne bleue s’allume", false, false, false, false
-30,qui lui a brisé le cœur ?,"Applaudissements, la colonne jaune s’allume", false, false, false, false
-31,sur le canapé pour être intégré à sa famille humaine !,"Applaudissements, la colonne verte s’allume", false, false, false, false
-32,lâcheuse de grands ours amoureux et voleuse de canapés !,Petite marque rose, false, false, false, false
-33,Miss Ceile’s Blues,Applaudissements, false, false, false, false
-34,Coup de téléphone,clignoter en rose, false, false, false, false
-35,Vous avez eu du plaisir ?,"provoquer une réponse forte qui fasse péter l’applaudimètre, explosion", false, false, false, false
+sort,timing,description, LB, CE, JB, Sammy, weight, max
+0,Introduction,random LEDs., false, false, false, false, 100, 100
+1,The way you look tonight - avant solo sax,"Explosion, les lumières de l’applaudimètre s’allument.", false, false, false, false, 100, 100
+2,The way you look tonight - fin,Applaudissements, false, false, false, false, 100, 100
+3,"Et en plus, l’applaudimètre fonctionne... c’est super !",Faire qu'il s'allume après la réplique, false, false, false, false, 100, 100
+4,"En bleu, notre guitariste : Jean-Baptiste De La Touche...","Applaudissements, la colonne bleue s’allume", false, false, false, false, 100, 100
+5,"En vert, notre saxophoniste : Charles Edouard von Bourdon...","Applaudissements, la colonne verte s’allume", false, false, false, false, 100, 100
+6,"Et en rose, notre chanteue : Lady Bee !","Applaudissements, la colonne rose s’allume", false, false, false, false, 100, 100
+7,"Et en jaune, notre contrebassiste : Sammy l’Asticot",Petit clignotement jaune, false, false, false, false, 100, 100
+8,Vous avez compris ?,Les lumières s’allument à fond., false, false, false, false, 100, 100
+9,Swingy Lady,"L’applaudimètre est très haut, pour les quatre - mais pas à fonds", false, false, false, false, 100, 100
+10,Vous l’avez trouvée comment notre chanson ?,"Le public applaudit, l’applaudimètre monte encore un peu", false, false, false, false, 100, 100
+11,"Et nos musiciens, vous les avez trouvé comment ?","Même jeu, l’applaudimètre monte encore pour les musiciens", false, false, false, false, 100, 100
+12,Et notre chanteuse ? Elle est comment ?,"Même jeu, l’applaudimètre atteint le, false, false, false, false, 100, 100
+sommet - surtout le rose", false, false, false, false, 100, 100
+13,Don’t Get Around Much Anymore,Applaudissements - L’applaudimètre est au maximum, false, false, false, false, 100, 100
+14,En retards,Applaudissements, false, false, false, false, 100, 100
+15,Perhaps,Applaudissements, false, false, false, false, 100, 100
+16,No moon at all,Applaudissements, false, false, false, false, 100, 100
+17,Makin’ Whoopee,Applaudissements, false, false, false, false, 100, 100
+18,Jeunes mariés / papa / maman / ...,Applaudissements - mode manuel, false, false, false, false, 100, 100
+19,Sunday Morning Blues,Applaudissements, false, false, false, false, 100, 100
+20,St. James Infirmary,Applaudissements - très faibles, false, false, false, false, 100, 100
+21,Devil May care,Applaudissements, false, false, false, false, 100, 100
+22,Le temps du muguet,Applaudissements, false, false, false, false, 100, 100
+23,"Allez les fans de l’été, on applaudit !.","Applaudissements, la colonne bleue s’allume", false, false, false, false, 100, 100
+24,"Maintenant, on applaudit pour l’automne !","Applaudissements, la colonne verte s’allume", false, false, false, false, 100, 100
+25,Qui applaudit l’hiver ?,Petite marque jaune, false, false, false, false, 100, 100
+26,"Alors, qui vote pour le printemps ?!",Immense score rose, false, false, false, false, 100, 100
+27,Lullaby of Birdland,Applaudissements, false, false, false, false, 100, 100
+28,Poupette song,Applaudissements, false, false, false, false, 100, 100
+29,On applaudit pour l’oiseau ?,"Applaudissements, la colonne bleue s’allume", false, false, false, false, 100, 100
+30,qui lui a brisé le cœur ?,"Applaudissements, la colonne jaune s’allume", false, false, false, false, 100, 100
+31,sur le canapé pour être intégré à sa famille humaine !,"Applaudissements, la colonne verte s’allume", false, false, false, false, 100, 100
+32,lâcheuse de grands ours amoureux et voleuse de canapés !,Petite marque rose, false, false, false, false, 100, 100
+33,Miss Ceile’s Blues,Applaudissements, false, false, false, false, 100, 100
+34,Coup de téléphone,clignoter en rose, false, false, false, false, 100, 100
+35,Vous avez eu du plaisir ?,"provoquer une réponse forte qui fasse péter l’applaudimètre, explosion", false, false, false, false, 100, 100
