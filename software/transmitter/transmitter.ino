@@ -21,17 +21,14 @@ const unsigned long activationDuration = 5000;
 
 #define BTN_1 4
 #define BTN_2 5
-#define LED 6
 
 int btn = LOW;
 int memory_btn = LOW;
-
 bool memory_btn_flag = false;
-int analogue_data = 0;
-
 struct DataPacket {
   int channel;
   int value;
+  int micSensitivity;
 };
 
 DataPacket currentPacket;
@@ -63,13 +60,13 @@ void setup()
 
   pinMode(BTN_1, INPUT_PULLUP);
   pinMode(BTN_2, INPUT_PULLUP);
-  pinMode(LED, OUTPUT);
 }
 
 void loop()
 {
   // Update the current packet
-  currentPacket.value = map(analogRead(A1), 0, 1000, 0, 3); // Example analog value
+  currentPacket.value = map(analogRead(A0), 0, 1023, 0, 100);
+  currentPacket.micSensitivity = map(analogRead(A1), 0, 1023, 0, 100);
     
   btn = digitalRead(BTN_1);
   if (btn == LOW && !memory_btn_flag) {
