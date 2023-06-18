@@ -26,9 +26,9 @@ int btn = LOW;
 int memory_btn = LOW;
 bool memory_btn_flag = false;
 struct DataPacket {
-  int channel;
-  int value;
-  int micSensitivity;
+  int channel = 0;
+  int value = 0;
+  int micSensitivity = 0;
 };
 
 DataPacket currentPacket;
