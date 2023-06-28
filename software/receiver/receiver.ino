@@ -106,9 +106,6 @@ void setup()
   setupLeds<DATA_PIN_JB>(leds_JB, NUM_LEDS_JB);
   setupLeds<DATA_PIN_LB>(leds_LB, NUM_LEDS_LB);
   setupLeds<DATA_PIN_SA>(leds_SA, NUM_LEDS_SA);
-
-  pinMode(BTN_1, INPUT_PULLUP);
-  pinMode(BTN_2, INPUT_PULLUP);
 }
 
 void loop()
