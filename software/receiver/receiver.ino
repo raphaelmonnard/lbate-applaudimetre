@@ -42,12 +42,7 @@ struct DataPacket {
 };
 
 int scaledValue;
-
 int scaledValue_CE = 1;
-int scaledValue_JB = 1;
-int scaledValue_LB = 1;
-int scaledValue_SA = 1;
-
 int channel = 0; 
 int value = 100;
 int value_CE = 100;
@@ -56,7 +51,7 @@ int max = 100;
 int mic = 0;
 int micSensitivity = 1023;
 
-int brightness;
+int brightness = 32;
 
 void updateDisplay(String text) {
   display.clearDisplay();
@@ -137,19 +132,12 @@ void loop()
   }
   
   int8_t value_CE = pgm_read_word(&(params[channel][0]));
-  int8_t value_JB = pgm_read_word(&(params[channel][1]));
-  int8_t value_LB = pgm_read_word(&(params[channel][2]));
-  int8_t value_SA = pgm_read_word(&(params[channel][3]));
-   
   int8_t weight = pgm_read_word(&(params[channel][4]));
   int8_t max = pgm_read_word(&(params[channel][5]));
   mic = map(analogRead(A0), 0, micSensitivity, 0, 100);
 
   scaledValue = (weight * value / 100 + (100 - weight) * mic / 100 ) * max / 100; // valeur relative
   scaledValue_CE = map(scaledValue, 0, 100, 0, NUM_LEDS_CE) * value_CE / 100; // valeur absolue
-  scaledValue_JB = map(scaledValue, 0, 100, 0, NUM_LEDS_JB) * value_JB / 100; // valeur absolue
-  scaledValue_LB = map(scaledValue, 0, 100, 0, NUM_LEDS_LB) * value_LB / 100; // valeur absolue
-  scaledValue_SA = map(scaledValue, 0, 100, 0, NUM_LEDS_SA) * value_SA / 100; // valeur absolue
 
   // Serial.print("Channel: ");
   // Serial.print(channel);
