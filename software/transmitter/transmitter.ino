@@ -19,8 +19,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 unsigned long activationTime = 0;
 const unsigned long activationDuration = 5000;
 
-#define BTN_1 4
-#define BTN_2 5
+#define BTN_1 2
+#define BTN_2 3
 
 int btn = LOW;
 int memory_btn = LOW;
@@ -66,7 +66,7 @@ void loop()
 {
   // Update the current packet
   currentPacket.value = map(analogRead(A0), 0, 1023, 0, 100);
-  currentPacket.micSensitivity = map(analogRead(A1), 0, 1023, 0, 100);
+  currentPacket.micSensitivity = map(analogRead(A0), 0, 1023, 0, 100);
     
   btn = digitalRead(BTN_1);
   if (btn == LOW && !memory_btn_flag) {
