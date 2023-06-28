@@ -53,11 +53,19 @@ int micSensitivity = 1023;
 
 int brightness = 32;
 
-const int BTN_1 = 12;  // Pin connected to the reference button
-const int BTN_2 = 13;  // Pin connected to the button
-int buttonState = HIGH;    // Current state of the button
-int lastButtonState = HIGH;  // Previous state of the button
-int mode = 0;  // Current mode (0: brightness, 1: mic sensitivity, 2: spectacle)
+void updateDisplay(String text) {
+  display.clearDisplay();
+  display.setCursor(0, 0);
+  display.println(text);
+  display.display();  
+}
+
+void displayPacket(DataPacket packet) {
+  Serial.print("Received Packet - channel: ");
+  Serial.print(packet.channel);
+  Serial.print(", Value: ");
+  Serial.println(packet.value);
+}
 
 void setLEDs(CRGB* leds, int numLeds, int scaledValue, CRGB color) {
   for (int i = 0; i < numLeds; i++) {
