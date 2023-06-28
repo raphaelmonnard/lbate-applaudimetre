@@ -19,20 +19,20 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 // Init FastLED
 #include<FastLED.h>
 
-#define NUM_LEDS_CE 3
-#define DATA_PIN_CE 2
+#define NUM_LEDS_CE 20
+#define DATA_PIN_CE 4
 CRGB leds_CE[NUM_LEDS_CE];
 
-#define NUM_LEDS_JB 3
-#define DATA_PIN_JB 3
+#define NUM_LEDS_JB 20
+#define DATA_PIN_JB 5
 CRGB leds_JB[NUM_LEDS_JB];
 
-#define NUM_LEDS_LB 3
-#define DATA_PIN_LB 4
+#define NUM_LEDS_LB 20
+#define DATA_PIN_LB 6
 CRGB leds_LB[NUM_LEDS_LB];
 
-#define NUM_LEDS_SA 3
-#define DATA_PIN_SA 5
+#define NUM_LEDS_SA 20
+#define DATA_PIN_SA 7
 CRGB leds_SA[NUM_LEDS_SA];
 
 
