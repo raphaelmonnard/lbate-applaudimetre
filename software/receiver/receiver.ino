@@ -35,10 +35,10 @@ CRGB leds_LB[NUM_LEDS_LB];
 #define DATA_PIN_SA 7
 CRGB leds_SA[NUM_LEDS_SA];
 
-
 struct DataPacket {
-  int channel;
-  int value;
+  int channel = 0;
+  int value = 0;
+  int micSensitivity = 0;
 };
 
 int mic;
