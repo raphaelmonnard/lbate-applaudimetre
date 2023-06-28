@@ -41,8 +41,15 @@ struct DataPacket {
   int micSensitivity = 0;
 };
 
-int mic;
-int micSensitivity = 512;
+int scaledValue;
+int scaledValue_CE = 1;
+int channel = 0; 
+int value = 100;
+int value_CE = 100;
+int weight = 100;
+int max = 100;
+int mic = 0;
+int micSensitivity = 1023;
 
 int brightness = 32;
 
