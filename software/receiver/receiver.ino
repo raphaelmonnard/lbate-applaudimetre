@@ -2,9 +2,10 @@
 #include <avr/pgmspace.h>
 #include "spectacle.h"
 #include <RH_ASK.h>
+#include <FastLED.h>
+
 // #include "SSD1306Ascii.h"
 // #include "SSD1306AsciiAvrI2c.h"
-#include <FastLED.h>
 
 // // 0X3C+SA0 - 0x3C or 0x3D
 // #define I2C_ADDRESS 0x3C
@@ -102,7 +103,7 @@ void setup() {
   setupLeds<DATA_PIN_CE, leds_CE, NUM_LEDS_CE>();
   setupLeds<DATA_PIN_JB, leds_JB, NUM_LEDS_JB>();
   setupLeds<DATA_PIN_LB, leds_LB, NUM_LEDS_LB>();
-  setupLeds<DATA_PIN_SA, leds_SA, NUM_LEDS_SA>();
+  setupLeds<DATA_PIN_SA, leds_SA, NUM_LEDS_SA>(); 
 }
 
 void loop() {
@@ -143,4 +144,9 @@ void loop() {
   FastLED.setBrightness(brightness);
 
   FastLED.show();
+
+  // update brightness for the red LED diodes, 
+  // output PIN 3 (required to avoid conflict wiht RadioHead)
+  // Analog sensor A2
+  analogWrite(3, map(analogRead(A2), 0, 1023, 0, 255));
 }
