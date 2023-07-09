@@ -44,14 +44,24 @@ struct DataPacket {
 // Adafruit_SSD1306 display(128, 32, &Wire, -1);
 RH_ASK driver;
 DataPacket packet;
+int memoryFlag = 0;
+int memoryMillis = millis();
+int brightness = 0;
 int channel = 0;
-int value = 100;
-int weight = 100;
-int max = 100;
-int mic = 0;
+int ledHeightPotValue = 100;
 int micSensitivity = 1023;
-int brightness = 32;
-double temperature;
+int micLowerThreshold = 90; 
+
+const int attackTime = 100;     // Attack time in milliseconds
+const int decayTime = 1800;      // Decay time in milliseconds
+const int sustainLevel = 0;    // Sustain level
+const int releaseTime = 2000;    // Release time in milliseconds
+
+unsigned long startTime;         // Time when the note starts
+int initialValue;
+int envelopeValue = 0;           // Current value of the envelope signal$
+
+int B;
 
 // void updateDisplay(const String& text) {
 //   display.clearDisplay();
@@ -70,6 +80,44 @@ template <uint8_t DATA_PIN, CRGB* leds, int numLeds>
 void setupLeds() {
   FastLED.addLeds<WS2812, DATA_PIN, RGB>(leds, numLeds);
   pinMode(DATA_PIN, OUTPUT);
+}
+
+void randomLEDs(CRGB* leds, int numLeds) {
+  if (random(4)==1){
+    for (int i = 0; i < numLeds; i++){
+      leds[i] = CRGB::Black;
+    }
+  }
+  
+  int randomIndex = random(numLeds);
+  
+  // Generate random RGB values for the color components
+  byte randomRed = random(256);
+  byte randomGreen = random(256);
+  byte randomBlue = random(256);
+
+  // Assign the random color to the selected LED
+  leds[randomIndex] = CRGB(randomRed, randomGreen, randomBlue);
+}
+
+void upLEDs(CRGB* leds, int numLeds, CRGB color){
+    for (int i = 0; i < numLeds; i++){
+      leds[i] = color;
+      FastLED.show();
+      delay(20);
+  }
+}
+
+void blinkLEDs(){
+  Serial.println("start blink");
+  for (int i = 0; i<3; i++ ) {
+    FastLED.setBrightness(0);
+    FastLED.show();
+    delay(200);
+    FastLED.setBrightness(brightness);
+    FastLED.show();
+    delay(200);
+  }
 }
 
 void setup() {
@@ -108,45 +156,171 @@ void setup() {
 
 void loop() {
   // updateDisplay("Spectacle");
-  Serial.println("start loop");
+  // Serial.println("start loop");
+
+  // Adjust brightness of stripe LED
+  if (memoryFlag != 3) {
+    brightness = map(analogRead(A1), 0, 1023, 0, 255);
+  } else {
+    brightness = 0;
+  }
+  FastLED.setBrightness(brightness);
+
+  // update brightness for the red LED diodes, 
+  // output PIN 3 (required to avoid conflict wiht RadioHead)
+  // Analog sensor A2
+  analogWrite(3, map(analogRead(A2), 0, 1023, 0, 255));
 
   if (driver.available()) {
     uint8_t buf[RH_ASK_MAX_MESSAGE_LEN];
     uint8_t buflen = sizeof(buf);
     if (driver.recv(buf, &buflen) && buflen == sizeof(packet)) {
       memcpy(&packet, buf, sizeof(packet));
-      value = packet.value;
+      ledHeightPotValue = packet.ledHeightPotValue;
       channel = packet.channel;
       micSensitivity = packet.micSensitivity;
     }
+    FastLED.show();
   }
 
-  int8_t value_CE = pgm_read_word(&(params[channel][0]));
-  int8_t value_JB = pgm_read_word(&(params[channel][1]));
-  int8_t value_LB = pgm_read_word(&(params[channel][2]));
-  int8_t value_SA = pgm_read_word(&(params[channel][3]));
-  int8_t weight = pgm_read_word(&(params[channel][4]));
-  int8_t max = pgm_read_word(&(params[channel][5]));
-  mic = map(analogRead(A0), 0, micSensitivity, 0, 100);
+  int flag = pgm_read_word(&(params[channel][7]));
 
-  int scaledValue = (weight * value / 100 + (100 - weight) * mic / 100) * max / 100;
-  int scaledValue_CE = map(scaledValue, 0, 100, 0, NUM_LEDS_CE) * value_CE / 100;
-  int scaledValue_JB = map(scaledValue, 0, 100, 0, NUM_LEDS_JB) * value_JB / 100;
-  int scaledValue_LB = map(scaledValue, 0, 100, 0, NUM_LEDS_LB) * value_LB / 100;
-  int scaledValue_SA = map(scaledValue, 0, 100, 0, NUM_LEDS_SA) * value_SA / 100;
+  // Test intensité LED  
+  if (flag == 1) {
+    setLEDs(leds_CE, NUM_LEDS_CE, 100, COLOR_CE);
+    setLEDs(leds_JB, NUM_LEDS_JB, 100, COLOR_JB);
+    setLEDs(leds_LB, NUM_LEDS_LB, 100, COLOR_LB);
+    setLEDs(leds_SA, NUM_LEDS_SA, 100, COLOR_SA);  
+  }
+  
+  // Introduction - random LEDs  
+  else if (flag == 2) {
+    randomLEDs(leds_CE, NUM_LEDS_CE);
+    randomLEDs(leds_JB, NUM_LEDS_JB);
+    randomLEDs(leds_LB, NUM_LEDS_LB);
+    randomLEDs(leds_SA, NUM_LEDS_SA);
+    delay(random(50, 200));
+  }
 
-  setLEDs(leds_CE, NUM_LEDS_CE, scaledValue_CE, COLOR_CE);
-  setLEDs(leds_JB, NUM_LEDS_JB, scaledValue, COLOR_JB);
-  setLEDs(leds_LB, NUM_LEDS_LB, scaledValue, COLOR_LB);
-  setLEDs(leds_SA, NUM_LEDS_SA, scaledValue, COLOR_SA);
+  // Explosion, les lumières de l’applaudimètre s’allument.
+  else if (flag == 3) {
+    if (memoryFlag != 3) {
+      FastLED.clear();
+      FastLED.show();
+      upLEDs(leds_CE, NUM_LEDS_CE, COLOR_CE);
+      upLEDs(leds_JB, NUM_LEDS_JB, COLOR_JB);  
+      upLEDs(leds_LB, NUM_LEDS_LB, COLOR_LB);  
+      upLEDs(leds_SA, NUM_LEDS_SA, COLOR_SA);
+      blinkLEDs();
+    }
+  }
 
-  brightness = map(analogRead(A1), 0, 1023, 0, 255);
-  FastLED.setBrightness(brightness);
+  // Coup de téléphone - clignoter
+  else if (flag == 4) {
+    setLEDs(leds_CE, NUM_LEDS_CE, 100, COLOR_CE);
+    setLEDs(leds_JB, NUM_LEDS_JB, 100, COLOR_JB);
+    setLEDs(leds_LB, NUM_LEDS_LB, 100, COLOR_LB);
+    setLEDs(leds_SA, NUM_LEDS_SA, 100, COLOR_SA);  
+    blinkLEDs();
+  }
 
-  FastLED.show();
+  else{
+    int weight_CE = pgm_read_word(&(params[channel][0]));
+    int weight_JB = pgm_read_word(&(params[channel][1]));
+    int weight_LB = pgm_read_word(&(params[channel][2]));
+    int weight_SA = pgm_read_word(&(params[channel][3]));
+    int red_led = pgm_read_word(&(params[channel][4]));
+    int weight = pgm_read_word(&(params[channel][5]));
+    int max = pgm_read_word(&(params[channel][6]));
 
-  // update brightness for the red LED diodes, 
-  // output PIN 3 (required to avoid conflict wiht RadioHead)
-  // Analog sensor A2
-  analogWrite(3, map(analogRead(A2), 0, 1023, 0, 255));
+    // compute factor for potentiometer value (0-100)
+    int A = weight * ledHeightPotValue / 100; 
+
+    // compute factor for mic (0-100)
+    int micValue = analogRead(A0);
+
+    //ensure lower limit: 
+    if (micValue < micLowerThreshold) {
+      micValue = micLowerThreshold;
+    }
+
+    //ensure higher limit: 
+    if (micValue > micSensitivity) {
+      micValue = micSensitivity;
+    }
+
+    int mic = map(micValue, micLowerThreshold, micSensitivity, 0, 100); // scaled value of mic with micSensitivity
+    
+    if (mic>0) {
+      // Start the note and reset the envelope
+      startTime = millis();
+      // update initial value only if mic signal is higher
+      if (mic > initialValue) {
+        initialValue = mic;
+      }
+    }
+
+    // Calculate the time since the note started
+    unsigned long currentTime = millis();
+    unsigned long elapsedTime = currentTime - startTime;
+
+    // Generate the envelope signal
+    if (elapsedTime < attackTime) {
+      // Attack phase
+      envelopeValue = map(elapsedTime, 0, attackTime, initialValue, 100);
+    } else if (elapsedTime < (attackTime + decayTime)) {
+      // Decay phase
+      envelopeValue = map(elapsedTime, attackTime, attackTime + decayTime, 100, sustainLevel);
+    } else {
+      // Release phase
+      unsigned long releaseElapsedTime = elapsedTime - (attackTime + decayTime);
+      envelopeValue = map(releaseElapsedTime, 0, releaseTime, sustainLevel, 0);
+      initialValue = 0;
+    }
+
+    B = ledHeightPotValue / 100 * (100 - weight) * initialValue / 100 * envelopeValue / 100;
+
+    delay(100);
+
+    // scale with max value (0-100)
+    int C = map(A + B, 0, 100, 0, max);
+
+    // compute the number of LED powered ON for each musician
+    int scaledValue_CE = map(C * weight_CE / 100, 0, 100, 0, NUM_LEDS_CE);
+    int scaledValue_JB = map(C * weight_JB / 100, 0, 100, 0, NUM_LEDS_JB);
+    int scaledValue_LB = map(C * weight_LB / 100, 0, 100, 0, NUM_LEDS_LB);
+    int scaledValue_SA = map(C * weight_SA / 100, 0, 100, 0, NUM_LEDS_SA);
+
+    // update the LED controlers
+    setLEDs(leds_CE, NUM_LEDS_CE, scaledValue_CE, COLOR_CE);
+    setLEDs(leds_JB, NUM_LEDS_JB, scaledValue_JB, COLOR_JB);
+    setLEDs(leds_LB, NUM_LEDS_LB, scaledValue_LB, COLOR_LB);
+    setLEDs(leds_SA, NUM_LEDS_SA, scaledValue_SA, COLOR_SA);
+  }
+
+  memoryFlag = flag;
+  // int currentMillis= millis();
+  // Serial.println(millis()-memoryMillis);
+  // memoryMillis = currentMillis;
+
+  Serial.print("channel: ");
+  Serial.println(channel);
+  // Serial.print("\t A: ");
+  // Serial.print(A);
+  // Serial.print("\t envelopeValue: ");
+  // Serial.print(envelopeValue);
+  // Serial.print("\t weight: ");
+  // Serial.print(weight);  
+  // Serial.print("\t mic: ");
+  // Serial.print(mic);
+  // Serial.print("\t initialValue: ");
+  // Serial.print(initialValue);
+  // Serial.print("\t B: ");
+  // Serial.print(B);
+  // Serial.print("\t C: ");
+  // Serial.print(C);
+  // Serial.print("\t scaledValue_CE: ");
+  // Serial.println(scaledValue_CE);
+  // Serial.print("\t weight: ");
+  // Serial.println(weight);
 }

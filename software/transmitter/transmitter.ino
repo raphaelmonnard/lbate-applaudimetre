@@ -19,15 +19,19 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 unsigned long activationTime = 0;
 const unsigned long activationDuration = 5000;
 
-#define BTN_1 2
-#define BTN_2 3
+#define BTN_next 2
+#define BTN_previous 4
 
-int btn = LOW;
-int memory_btn = LOW;
-bool memory_btn_flag = false;
+int btn_next = LOW;
+int btn_previous = LOW;
+int memory_next_btn = LOW;
+int memory_previous_btn = LOW;
+bool memory_btn_next_flag = false;
+bool memory_btn_previous_flag = false;
+
 struct DataPacket {
   int channel = 0;
-  int value = 0;
+  int ledHeightPotValue = 0;
   int micSensitivity = 0;
 };
 
@@ -38,6 +42,13 @@ int channel = 0;                  // Initial channel selection
 int rows = sizeof(desc) / sizeof(desc[0]);
 
 char buffer[255];
+
+void updateDisplay(const char* text) {
+  display.clearDisplay();
+  display.setCursor(0, 0);
+  display.println(text);
+  display.display();
+}
 
 void setup()
 {
@@ -58,31 +69,42 @@ void setup()
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
 
-  pinMode(BTN_1, INPUT_PULLUP);
-  pinMode(BTN_2, INPUT_PULLUP);
+  pinMode(BTN_next, INPUT_PULLUP);
+  pinMode(BTN_previous, INPUT_PULLUP);
 }
 
 void loop()
 {
   // Update the current packet
-  currentPacket.value = map(analogRead(A0), 0, 1023, 0, 100);
-  currentPacket.micSensitivity = map(analogRead(A0), 0, 1023, 0, 100);
+  currentPacket.ledHeightPotValue = map(analogRead(A1), 0, 1023, 0, 100);
+  currentPacket.micSensitivity = analogRead(A0);
     
-  btn = digitalRead(BTN_1);
-  if (btn == LOW && !memory_btn_flag) {
+  btn_next = digitalRead(BTN_next);
+  if (btn_next == LOW && !memory_btn_next_flag) {
     currentPacket.channel = (currentPacket.channel + 1) % rows;
     Serial.print("Selected Channel: ");
     Serial.println(currentPacket.channel);
     strcpy_P(buffer, (char *)pgm_read_word(&(desc[currentPacket.channel])));  // Necessary casts and dereferencing, just copy.
-    memory_btn_flag = true;
-  
+    memory_btn_next_flag = true;
+    
     activationTime = millis();  // Record the time when the button is pressed
-    display.clearDisplay();
-    display.setCursor(0, 0);
-    display.println(buffer);
-    display.display();
-  } else if (btn == HIGH) {
-    memory_btn_flag = false;
+    updateDisplay(buffer);
+  } else if (btn_next == HIGH) {
+    memory_btn_next_flag = false;
+  }
+
+  btn_previous = digitalRead(BTN_previous);
+  if (btn_previous == LOW && !memory_btn_previous_flag) {
+    currentPacket.channel = (currentPacket.channel + rows - 1) % rows;
+    Serial.print("Selected Channel: ");
+    Serial.println(currentPacket.channel);
+    strcpy_P(buffer, (char *)pgm_read_word(&(desc[currentPacket.channel])));  // Necessary casts and dereferencing, just copy.
+    memory_btn_previous_flag = true;
+    
+    activationTime = millis();  // Record the time when the button is pressed
+    updateDisplay(buffer);
+  } else if (btn_previous == HIGH) {
+    memory_btn_previous_flag = false;
   }
   
   // Compare with the previous packet
