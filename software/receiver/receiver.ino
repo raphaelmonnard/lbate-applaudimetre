@@ -158,10 +158,10 @@ void loop() {
   // Serial.println("start loop");
 
   // Adjust brightness of stripe LED
-  if (memoryFlag != 3 or memoryFlag != 6 ) {
-    brightness = map(analogRead(A1), 0, 1023, 0, 255);
-  } else {
+  if (memoryFlag == 3 || memoryFlag == 6 ) {
     brightness = 0;
+  } else {
+    brightness = map(analogRead(A1), 0, 1023, 0, 255);
   }
   FastLED.setBrightness(brightness);
 
@@ -185,6 +185,10 @@ void loop() {
   }
 
   int flag = pgm_read_word(&(params[channel][7]));
+  // auto control LEDs withou ledHeightPotValue
+  if (flag == 5){  
+    ledHeightPotValue = 100;
+  }
 
   // Test intensité LED  
   if (flag == 1) {
@@ -225,10 +229,6 @@ void loop() {
     blinkLEDs();
   }
 
-  // auto control LEDs withou ledHeightPotValue
-  else if (flag == 5){  
-    ledHeightPotValue = 100;
-  }
   
   else if (flag == 6){
     if (memoryFlag != 6) {
@@ -237,10 +237,21 @@ void loop() {
       setLEDs(leds_LB, NUM_LEDS_LB, 100, COLOR_LB);
       setLEDs(leds_SA, NUM_LEDS_SA, 100, COLOR_SA);  
       blinkLEDs();
-      FastLED.clear();
-      FastLED.show();
 
-      for (int i=0; i<5; i++){
+      setLEDs(leds_CE, NUM_LEDS_CE, 100, COLOR_CE);
+      setLEDs(leds_JB, NUM_LEDS_JB, 100, COLOR_JB);
+      setLEDs(leds_LB, NUM_LEDS_LB, 100, COLOR_LB);
+      setLEDs(leds_SA, NUM_LEDS_SA, 100, COLOR_SA); 
+      
+      for (int i=255; i>=0; i=i-2){
+        FastLED.setBrightness(i);
+        FastLED.show();
+        analogWrite(3, i);     
+      }
+
+      FastLED.setBrightness(255);
+
+      for (int i=0; i<10; i++){
         randomLEDs(leds_CE, NUM_LEDS_CE);
         randomLEDs(leds_JB, NUM_LEDS_JB);
         randomLEDs(leds_LB, NUM_LEDS_LB);
@@ -251,21 +262,6 @@ void loop() {
         analogWrite(3, 0);
         delay(random(500));
       }
-
-      setLEDs(leds_CE, NUM_LEDS_CE, 100, COLOR_CE);
-      setLEDs(leds_JB, NUM_LEDS_JB, 100, COLOR_JB);
-      setLEDs(leds_LB, NUM_LEDS_LB, 100, COLOR_LB);
-      setLEDs(leds_SA, NUM_LEDS_SA, 100, COLOR_SA); 
-      
-      for (int i=255; i>=0; i--){
-        FastLED.setBrightness(i);
-        FastLED.show();
-
-        analogWrite(3, i);
-        delay(1);        
-      }
-      FastLED.clear();
-      FastLED.show();       
     }            
   }
 
@@ -340,30 +336,30 @@ void loop() {
     setLEDs(leds_LB, NUM_LEDS_LB, scaledValue_LB, COLOR_LB);
     setLEDs(leds_SA, NUM_LEDS_SA, scaledValue_SA, COLOR_SA);
 
-    
-    Serial.print("channel: ");
-    Serial.println(channel);
-    // Serial.print("\t A: ");
-    // Serial.print(A);
-    // Serial.print("\t ledHeightPotValue: ");
-    // Serial.print(ledHeightPotValue);
-    // Serial.print("\t envelopeValue: ");
-    // Serial.print(envelopeValue);
-    // Serial.print("\t weight: ");
-    // Serial.print(weight);  
-    // Serial.print("\t mic: ");
-    // Serial.print(mic);
-    // Serial.print("\t initialValue: ");
-    // Serial.print(initialValue);
-    // Serial.print("\t B: ");
-    // Serial.print(B);
-    // Serial.print("\t C: ");
-    // Serial.println(C);
-    // Serial.print("\t scaledValue_CE: ");
-    // Serial.println(scaledValue_CE);
-    // Serial.print("\t weight: ");
-    // Serial.println(weight);
+    Serial.print("\t A: ");
+    Serial.print(A);
+    Serial.print("\t ledHeightPotValue: ");
+    Serial.print(ledHeightPotValue);
+    Serial.print("\t envelopeValue: ");
+    Serial.print(envelopeValue);
+    Serial.print("\t weight: ");
+    Serial.print(weight);  
+    Serial.print("\t mic: ");
+    Serial.print(mic);
+    Serial.print("\t initialValue: ");
+    Serial.print(initialValue);
+    Serial.print("\t B: ");
+    Serial.print(B);
+    Serial.print("\t C: ");
+    Serial.println(C);
+    Serial.print("\t scaledValue_CE: ");
+    Serial.println(scaledValue_CE);
+    Serial.print("\t weight: ");
+    Serial.println(weight);
   }
+
+  Serial.print("channel: ");
+  Serial.println(channel);
 
   memoryFlag = flag;
   // int currentMillis= millis();
