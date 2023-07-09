@@ -18,7 +18,7 @@ with open(csv_file, 'r') as file:
     next(reader)  # Skip the header row
     
     for row in reader:
-        int_array.append(row[2:10])
+        int_array.append(row[2:9])
         string_array.append([row[0]])
 
 # Generate the header file content

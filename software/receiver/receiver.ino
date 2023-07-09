@@ -168,7 +168,10 @@ void loop() {
   // update brightness for the red LED diodes, 
   // output PIN 3 (required to avoid conflict wiht RadioHead)
   // Analog sensor A2
-  if (memoryFlag != 6){
+  if (memoryFlag == 6 || memoryFlag == 7){
+    analogWrite(3, 0);
+  }
+  else{
     analogWrite(3, map(analogRead(A2), 0, 1023, 0, 255));
   }
 
@@ -184,7 +187,7 @@ void loop() {
     FastLED.show();
   }
 
-  int flag = pgm_read_word(&(params[channel][7]));
+  int flag = pgm_read_word(&(params[channel][6]));
   // auto control LEDs withou ledHeightPotValue
   if (flag == 5){  
     ledHeightPotValue = 100;
@@ -229,7 +232,6 @@ void loop() {
     blinkLEDs();
   }
 
-  
   else if (flag == 6){
     if (memoryFlag != 6) {
       setLEDs(leds_CE, NUM_LEDS_CE, 100, COLOR_CE);
@@ -270,9 +272,8 @@ void loop() {
     int weight_JB = pgm_read_word(&(params[channel][1]));
     int weight_LB = pgm_read_word(&(params[channel][2]));
     int weight_SA = pgm_read_word(&(params[channel][3]));
-    int red_led = pgm_read_word(&(params[channel][4]));
-    int weight = pgm_read_word(&(params[channel][5]));
-    int max = pgm_read_word(&(params[channel][6]));
+    int weight = pgm_read_word(&(params[channel][4]));
+    int max = pgm_read_word(&(params[channel][5]));
 
     // compute factor for potentiometer value (0-100)
     int A = weight * ledHeightPotValue / 100; 
@@ -336,26 +337,26 @@ void loop() {
     setLEDs(leds_LB, NUM_LEDS_LB, scaledValue_LB, COLOR_LB);
     setLEDs(leds_SA, NUM_LEDS_SA, scaledValue_SA, COLOR_SA);
 
-    Serial.print("\t A: ");
-    Serial.print(A);
-    Serial.print("\t ledHeightPotValue: ");
-    Serial.print(ledHeightPotValue);
-    Serial.print("\t envelopeValue: ");
-    Serial.print(envelopeValue);
-    Serial.print("\t weight: ");
-    Serial.print(weight);  
-    Serial.print("\t mic: ");
-    Serial.print(mic);
-    Serial.print("\t initialValue: ");
-    Serial.print(initialValue);
-    Serial.print("\t B: ");
-    Serial.print(B);
-    Serial.print("\t C: ");
-    Serial.println(C);
-    Serial.print("\t scaledValue_CE: ");
-    Serial.println(scaledValue_CE);
-    Serial.print("\t weight: ");
-    Serial.println(weight);
+    // Serial.print("\t A: ");
+    // Serial.print(A);
+    // Serial.print("\t ledHeightPotValue: ");
+    // Serial.print(ledHeightPotValue);
+    // Serial.print("\t envelopeValue: ");
+    // Serial.print(envelopeValue);
+    // Serial.print("\t weight: ");
+    // Serial.print(weight);  
+    // Serial.print("\t mic: ");
+    // Serial.print(mic);
+    // Serial.print("\t initialValue: ");
+    // Serial.print(initialValue);
+    // Serial.print("\t B: ");
+    // Serial.print(B);
+    // Serial.print("\t C: ");
+    // Serial.println(C);
+    // Serial.print("\t scaledValue_CE: ");
+    // Serial.println(scaledValue_CE);
+    // Serial.print("\t weight: ");
+    // Serial.println(weight);
   }
 
   Serial.print("channel: ");
