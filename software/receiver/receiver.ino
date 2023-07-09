@@ -109,7 +109,6 @@ void upLEDs(CRGB* leds, int numLeds, CRGB color){
 }
 
 void blinkLEDs(){
-  Serial.println("start blink");
   for (int i = 0; i<3; i++ ) {
     FastLED.setBrightness(0);
     FastLED.show();
@@ -159,7 +158,7 @@ void loop() {
   // Serial.println("start loop");
 
   // Adjust brightness of stripe LED
-  if (memoryFlag != 3) {
+  if (memoryFlag != 3 or memoryFlag != 6 ) {
     brightness = map(analogRead(A1), 0, 1023, 0, 255);
   } else {
     brightness = 0;
@@ -169,7 +168,9 @@ void loop() {
   // update brightness for the red LED diodes, 
   // output PIN 3 (required to avoid conflict wiht RadioHead)
   // Analog sensor A2
-  analogWrite(3, map(analogRead(A2), 0, 1023, 0, 255));
+  if (memoryFlag != 6){
+    analogWrite(3, map(analogRead(A2), 0, 1023, 0, 255));
+  }
 
   if (driver.available()) {
     uint8_t buf[RH_ASK_MAX_MESSAGE_LEN];
@@ -215,13 +216,57 @@ void loop() {
     }
   }
 
-  // Coup de téléphone - clignoter
+  // Coup de téléphone - clignoter ou "Et en plus, l’applaudimètre fonctionne... c’est super !"
   else if (flag == 4) {
     setLEDs(leds_CE, NUM_LEDS_CE, 100, COLOR_CE);
     setLEDs(leds_JB, NUM_LEDS_JB, 100, COLOR_JB);
     setLEDs(leds_LB, NUM_LEDS_LB, 100, COLOR_LB);
-    setLEDs(leds_SA, NUM_LEDS_SA, 100, COLOR_SA);  
+    setLEDs(leds_SA, NUM_LEDS_SA, 100, COLOR_SA);
     blinkLEDs();
+  }
+
+  // auto control LEDs withou ledHeightPotValue
+  else if (flag == 5){  
+    ledHeightPotValue = 100;
+  }
+  
+  else if (flag == 6){
+    if (memoryFlag != 6) {
+      setLEDs(leds_CE, NUM_LEDS_CE, 100, COLOR_CE);
+      setLEDs(leds_JB, NUM_LEDS_JB, 100, COLOR_JB);
+      setLEDs(leds_LB, NUM_LEDS_LB, 100, COLOR_LB);
+      setLEDs(leds_SA, NUM_LEDS_SA, 100, COLOR_SA);  
+      blinkLEDs();
+      FastLED.clear();
+      FastLED.show();
+
+      for (int i=0; i<5; i++){
+        randomLEDs(leds_CE, NUM_LEDS_CE);
+        randomLEDs(leds_JB, NUM_LEDS_JB);
+        randomLEDs(leds_LB, NUM_LEDS_LB);
+        randomLEDs(leds_SA, NUM_LEDS_SA);
+        FastLED.show();        
+        analogWrite(3, random(255));
+        delay(random(500));
+        analogWrite(3, 0);
+        delay(random(500));
+      }
+
+      setLEDs(leds_CE, NUM_LEDS_CE, 100, COLOR_CE);
+      setLEDs(leds_JB, NUM_LEDS_JB, 100, COLOR_JB);
+      setLEDs(leds_LB, NUM_LEDS_LB, 100, COLOR_LB);
+      setLEDs(leds_SA, NUM_LEDS_SA, 100, COLOR_SA); 
+      
+      for (int i=255; i>=0; i--){
+        FastLED.setBrightness(i);
+        FastLED.show();
+
+        analogWrite(3, i);
+        delay(1);        
+      }
+      FastLED.clear();
+      FastLED.show();       
+    }            
   }
 
   else{
@@ -278,24 +323,46 @@ void loop() {
       initialValue = 0;
     }
 
-    B = ledHeightPotValue / 100 * (100 - weight) * initialValue / 100 * envelopeValue / 100;
-
-    delay(100);
+    B = ledHeightPotValue / 100.0 * (100 - weight) * initialValue / 100.0 * envelopeValue / 100.0;
 
     // scale with max value (0-100)
     int C = map(A + B, 0, 100, 0, max);
 
     // compute the number of LED powered ON for each musician
-    int scaledValue_CE = map(C * weight_CE / 100, 0, 100, 0, NUM_LEDS_CE);
-    int scaledValue_JB = map(C * weight_JB / 100, 0, 100, 0, NUM_LEDS_JB);
-    int scaledValue_LB = map(C * weight_LB / 100, 0, 100, 0, NUM_LEDS_LB);
-    int scaledValue_SA = map(C * weight_SA / 100, 0, 100, 0, NUM_LEDS_SA);
+    int scaledValue_CE = map(C * weight_CE / 100.0, 0, 100, 0, NUM_LEDS_CE);
+    int scaledValue_JB = map(C * weight_JB / 100.0, 0, 100, 0, NUM_LEDS_JB);
+    int scaledValue_LB = map(C * weight_LB / 100.0, 0, 100, 0, NUM_LEDS_LB);
+    int scaledValue_SA = map(C * weight_SA / 100.0, 0, 100, 0, NUM_LEDS_SA);
 
     // update the LED controlers
     setLEDs(leds_CE, NUM_LEDS_CE, scaledValue_CE, COLOR_CE);
     setLEDs(leds_JB, NUM_LEDS_JB, scaledValue_JB, COLOR_JB);
     setLEDs(leds_LB, NUM_LEDS_LB, scaledValue_LB, COLOR_LB);
     setLEDs(leds_SA, NUM_LEDS_SA, scaledValue_SA, COLOR_SA);
+
+    
+    Serial.print("channel: ");
+    Serial.println(channel);
+    // Serial.print("\t A: ");
+    // Serial.print(A);
+    // Serial.print("\t ledHeightPotValue: ");
+    // Serial.print(ledHeightPotValue);
+    // Serial.print("\t envelopeValue: ");
+    // Serial.print(envelopeValue);
+    // Serial.print("\t weight: ");
+    // Serial.print(weight);  
+    // Serial.print("\t mic: ");
+    // Serial.print(mic);
+    // Serial.print("\t initialValue: ");
+    // Serial.print(initialValue);
+    // Serial.print("\t B: ");
+    // Serial.print(B);
+    // Serial.print("\t C: ");
+    // Serial.println(C);
+    // Serial.print("\t scaledValue_CE: ");
+    // Serial.println(scaledValue_CE);
+    // Serial.print("\t weight: ");
+    // Serial.println(weight);
   }
 
   memoryFlag = flag;
@@ -303,24 +370,4 @@ void loop() {
   // Serial.println(millis()-memoryMillis);
   // memoryMillis = currentMillis;
 
-  Serial.print("channel: ");
-  Serial.println(channel);
-  // Serial.print("\t A: ");
-  // Serial.print(A);
-  // Serial.print("\t envelopeValue: ");
-  // Serial.print(envelopeValue);
-  // Serial.print("\t weight: ");
-  // Serial.print(weight);  
-  // Serial.print("\t mic: ");
-  // Serial.print(mic);
-  // Serial.print("\t initialValue: ");
-  // Serial.print(initialValue);
-  // Serial.print("\t B: ");
-  // Serial.print(B);
-  // Serial.print("\t C: ");
-  // Serial.print(C);
-  // Serial.print("\t scaledValue_CE: ");
-  // Serial.println(scaledValue_CE);
-  // Serial.print("\t weight: ");
-  // Serial.println(weight);
 }

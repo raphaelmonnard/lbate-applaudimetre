@@ -19,8 +19,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 unsigned long activationTime = 0;
 const unsigned long activationDuration = 5000;
 
-#define BTN_next 2
-#define BTN_previous 4
+#define BTN_next 4
+#define BTN_previous 2
 
 int btn_next = LOW;
 int btn_previous = LOW;
