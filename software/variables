@@ -1,0 +1,23 @@
+transmitter
+===========
+
+* DataPacket.channel: 
+    * description: Selection du canal / scène du spectacle
+    * valeures: int 0-xx ou xx est le nombre de scène
+
+* DataPacket.ledHeightPotValue: 
+    * description: Valeur du potentiomètre pour le contrôle manuel de l'applaudimètre 
+    * valeures: int 0-100
+
+
+* DataPacket.micSensitivity: 
+    * description: détermine la valeur max du mapping pour l'envoloppe du micro
+    * valeures: int 0-1023
+
+receiver
+========
+
+* weight_XX:
+     * description: détermine un ratio de valeur pour chaque musiciens xx
+     valeures: int 0-100
+    
