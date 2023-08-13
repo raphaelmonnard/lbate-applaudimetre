@@ -21,6 +21,7 @@ const unsigned long activationDuration = 5000;
 
 #define BTN_next 8
 #define BTN_previous 7
+#define BTN_disp 9
 
 int btn_next = LOW;
 int btn_previous = LOW;
@@ -33,6 +34,7 @@ struct DataPacket {
   int channel = 0;
   int ledHeightPotValue = 0;
   int micSensitivity = 0;
+  bool display = false;
 };
 
 DataPacket currentPacket;
@@ -78,6 +80,9 @@ void loop()
   // Update the current packet
   currentPacket.ledHeightPotValue = map(analogRead(A1), 0, 1023, 0, 100);
   currentPacket.micSensitivity = analogRead(A0);
+  currentPacket.display = digitalRead(BTN_disp);
+  Serial.print("Selected disp: ");
+  Serial.println(currentPacket.display);
     
   btn_next = digitalRead(BTN_next);
   if (btn_next == LOW && !memory_btn_next_flag) {

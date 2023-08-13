@@ -43,6 +43,7 @@ struct DataPacket {
   int channel = 0;
   int ledHeightPotValue = 0;
   int micSensitivity = 0;
+  bool display = false;
 };
 
 // Adafruit_SSD1306 display(128, 32, &Wire, -1);
@@ -54,7 +55,8 @@ int brightness = 0;
 int channel = 0;
 int ledHeightPotValue = 100;
 int micSensitivity = 1023;
-int micLowerThreshold = 90; 
+int micLowerThreshold = 90;
+bool display = false;
 
 const int attackTime = 100;     // Attack time in milliseconds
 const int decayTime = 1800;      // Decay time in milliseconds
@@ -164,6 +166,15 @@ void loop() {
   // Adjust brightness of stripe LED
   if (memoryFlag == 3 || memoryFlag == 6 ) {
     brightness = 0;
+  } else if (memoryFlag == 8){
+    if (display){
+      Serial.print("brightness to 255");
+      brightness = map(analogRead(A1), 0, 1023, 0, 255);
+    }
+    else {
+      Serial.print("brightness to 0");
+        brightness = 0;
+    }
   } else {
     brightness = map(analogRead(A1), 0, 1023, 0, 255);
   }
@@ -187,6 +198,7 @@ void loop() {
       ledHeightPotValue = packet.ledHeightPotValue;
       channel = packet.channel;
       micSensitivity = packet.micSensitivity;
+      display = packet.display;
     }
     FastLED.show();
   }
@@ -271,6 +283,13 @@ void loop() {
     }            
   }
 
+  else if (flag == 8) {
+    setLEDs(leds_CE, NUM_LEDS_CE, 100, COLOR_CE);
+    setLEDs(leds_JB, NUM_LEDS_JB, 100, COLOR_JB);
+    setLEDs(leds_LB, NUM_LEDS_LB, 100, COLOR_LB);
+    setLEDs(leds_SA, NUM_LEDS_SA, 100, COLOR_SA);
+  }
+  
   else{
     int weight_CE = pgm_read_word(&(params[channel][0]));
     int weight_JB = pgm_read_word(&(params[channel][1]));
