@@ -17,7 +17,7 @@ RH_ASK driver(2000, 11, 14, 9);
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 unsigned long activationTime = 0;
-const unsigned long activationDuration = 5000;
+const unsigned long activationDuration = 3000;
 
 #define BTN_next 8
 #define BTN_previous 7
@@ -83,6 +83,11 @@ void loop()
   currentPacket.display = digitalRead(BTN_disp);
   Serial.print("Selected disp: ");
   Serial.println(currentPacket.display);
+
+  if (currentPacket.display==1) {
+    activationTime = millis();
+    updateDisplay(buffer);
+  }
     
   btn_next = digitalRead(BTN_next);
   if (btn_next == LOW && !memory_btn_next_flag) {
