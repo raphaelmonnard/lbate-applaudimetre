@@ -17,22 +17,26 @@
 
 #define NUM_LEDS_CE 33
 #define DATA_PIN_CE 7
-#define COLOR_CE 0x0EA500
+// #define COLOR_CE 0x0EA500
+#define COLOR_CE 0xFF3000
 CRGB leds_CE[NUM_LEDS_CE];
 
 #define NUM_LEDS_JB 28
 #define DATA_PIN_JB 6
-#define COLOR_JB 0x0045E5
+// #define COLOR_JB 0x0045E5
+#define COLOR_JB 0xFFFF00
 CRGB leds_JB[NUM_LEDS_JB];
 
 #define NUM_LEDS_LB 28
 #define DATA_PIN_LB 5
-#define COLOR_LB 0xD200AB
+// #define COLOR_LB 0xD200AB
+#define COLOR_LB 0xFF00FF
 CRGB leds_LB[NUM_LEDS_LB];
 
 #define NUM_LEDS_SA 34
 #define DATA_PIN_SA 4
-#define COLOR_SA 0xE5DD00
+// #define COLOR_SA 0xE5DD00
+#define COLOR_SA 0x00AAFF
 CRGB leds_SA[NUM_LEDS_SA];
 
 struct DataPacket {
