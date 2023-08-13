@@ -1,4 +1,4 @@
-const int params[42][7] PROGMEM = {
+const int params[46][7] PROGMEM = {
     {100,100,100,100,100,100,1},
     {100,100,100,100,0,100,5},
     {0,0,0,0,0,0,7},
@@ -40,7 +40,11 @@ const int params[42][7] PROGMEM = {
     {0,0,0,0,0,0,4},
     {100,100,100,100,50,100,0},
     {0,0,0,0,0,0,6},
-    {0,0,0,0,0,0,0}
+    {0,0,0,0,0,0,0},
+    {100,90,100,90,50,100,0},
+    {100,100,100,100,100,100,8},
+    {0,0,0,0,0,0,0},
+    {,,,,,,}
 };
 
 const char desc_0[] PROGMEM = "Test intensité LED";
@@ -84,7 +88,11 @@ const char desc_37[] PROGMEM = "Miss Ceile’s Blues";
 const char desc_38[] PROGMEM = "Coup de téléphone";
 const char desc_39[] PROGMEM = "Vous avez eu du plaisir ?";
 const char desc_40[] PROGMEM = "Péter l'applaudimètre";
-const char desc_41[] PROGMEM = "Fin";
+const char desc_41[] PROGMEM = "Applaudimètre cassé";
+const char desc_42[] PROGMEM = "Love me or Leave me";
+const char desc_43[] PROGMEM = "He Ho !";
+const char desc_44[] PROGMEM = "Fin";
+const char desc_45[] PROGMEM = "";
 
 const char *const desc[] PROGMEM = {
   desc_0,
@@ -128,5 +136,9 @@ const char *const desc[] PROGMEM = {
   desc_38,
   desc_39,
   desc_40,
-  desc_41
+  desc_41,
+  desc_42,
+  desc_43,
+  desc_44,
+  desc_45
 };

@@ -40,4 +40,7 @@ Miss Ceile’s Blues,Applaudissements,100,80,90,70,50,90,0
 Coup de téléphone,clignoter,0,0,0,0,0,0,4
 Vous avez eu du plaisir ?,"provoquer une réponse forte qui fasse péter l’applaudimètre, explosion",100,100,100,100,50,100,0
 Péter l'applaudimètre,clignoter,0,0,0,0,0,0,6
+Applaudimètre cassé,off,0,0,0,0,0,0,0
+Love me or Leave me,Applaudissements,100,90,100,90,50,100,0
+He Ho !,,100,100,100,100,100,100,8
 Fin,off,0,0,0,0,0,0,0
