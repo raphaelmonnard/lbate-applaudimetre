@@ -1,4 +1,4 @@
-﻿timing,description,CE,JB,LB,SA, weight, max,flag
+﻿timing,description,CE,JB,LB,SA," weight"," max",flag
 Test intensité LED,Réglage de l'intensité des LEDs avant le spectacle en fonction des condition de lumière,100,100,100,100,100,100,1
 Test sensibilité du micro,"Réglage de la sensibilité du micro en fonction du publique et du bruit ambiant. Il peut être ajuster à la fin de ""The way you look tonight""",100,100,100,100,0,100,5
 Pause,Inactive avant spectacle,0,0,0,0,0,0,7
@@ -9,7 +9,7 @@ The way you look tonight - fin,Applaudissements,90,80,100,50,50,70,0
 "En bleu, notre guitariste : Jean-Baptiste De La Touche...","Applaudissements, la colonne bleue s’allume",0,100,0,0,50,70,0
 "En vert, notre saxophoniste : Charles Edouard von Bourdon...","Applaudissements, la colonne verte s’allume",100,0,0,0,50,70,0
 "Et en rose, notre chanteue : Lady Bee !","Applaudissements, la colonne rose s’allume",0,0,100,0,50,70,0
-"Et en jaune, notre contrebassiste : Sammy l’Asticot",Petit clignotement jaune,0,0,0,100,50,30,0
+"Et en jaune, notre contrebassiste : Sammy l’Asticot",Petit clignotement jaune,0,0,0,100,50,15,0
 Vous avez compris ?,Les lumières s’allument à fond.,90,80,100,50,50,90,0
 Swingy Lady,"L’applaudimètre est très haut, pour les quatre - mais pas à fonds",90,80,100,50,50,50,0
 Vous l’avez trouvée comment notre chanson ?,"Le public applaudit, l’applaudimètre monte encore un peu",100,100,100,100,50,60,0
