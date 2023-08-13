@@ -110,7 +110,7 @@ void upLEDs(CRGB* leds, int numLeds, CRGB color){
     for (int i = 0; i < numLeds; i++){
       leds[i] = color;
       FastLED.show();
-      delay(20);
+      delay(10);
   }
 }
 
