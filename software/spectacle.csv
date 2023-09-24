@@ -1,8 +1,8 @@
-﻿timing,description,CE,JB,LB,SA, weight, max,flag
+﻿timing,description,CE,JB,LB,SA," weight"," max",flag
 Test intensité LED,Réglage de l'intensité des LEDs avant le spectacle en fonction des condition de lumière,100,100,100,100,100,100,1
 Test sensibilité du micro,"Réglage de la sensibilité du micro en fonction du publique et du bruit ambiant. Il peut être ajuster à la fin de ""The way you look tonight""",100,100,100,100,0,100,5
 Pause,Inactive avant spectacle,0,0,0,0,0,0,7
-Introduction,random LEDs.,100,100,100,100,0,100,2
+Introduction,"random LEDs. ""plus long""",100,100,100,100,0,100,2
 The way you look tonight - avant solo sax,"Explosion, les lumières de l’applaudimètre s’allument.",100,100,100,100,0,100,3
 The way you look tonight - fin,Applaudissements,90,80,100,50,50,70,0
 "Et en plus, l’applaudimètre fonctionne... c’est super !",Faire qu'il s'allume après la réplique,90,80,100,50,50,70,4
@@ -26,7 +26,7 @@ Sunday Morning Blues,Applaudissements,90,90,30,90,50,80,0
 St. James Infirmary,Applaudissements - très faibles,80,80,100,60,50,10,5
 Devil May care,Applaudissements,100,80,80,100,50,90,0
 Le temps du muguet,Applaudissements,80,80,100,80,50,90,0
-"Allez les fans de l’été, on applaudit !.","Applaudissements, la colonne bleue s’allume",0,100,0,0,50,80,0
+"Allez les fans de l’été, on applaudit !.","Applaudissements, la colonne bleue s’allume ""attention position""",0,100,0,0,50,80,0
 "Maintenant, on applaudit pour l’automne !","Applaudissements, la colonne verte s’allume",100,0,0,0,50,60,0
 Qui applaudit l’hiver ?,Petite marque jaune,0,0,0,100,50,10,0
 "Alors, qui vote pour le printemps ?!",Immense score rose,0,0,100,0,50,100,0
@@ -39,7 +39,7 @@ lâcheuse de grands ours amoureux et voleuse de canapés !,Petite marque rose,0,
 Miss Ceile’s Blues,Applaudissements,100,80,90,70,50,90,0
 Coup de téléphone,clignoter,0,0,0,0,0,0,4
 Vous avez eu du plaisir ?,"provoquer une réponse forte qui fasse péter l’applaudimètre, explosion",100,100,100,100,50,100,0
-Péter l'applaudimètre,clignoter,0,0,0,0,0,0,6
+Péter l'applaudimètre,"clignoter ""plus jouer""",0,0,0,0,0,0,6
 Love me or Leave me,Applaudissements,100,90,100,90,50,100,0
 He Ho !,,100,100,100,100,100,100,8
 ----- FIN -----,off,0,0,0,0,0,0,0
