@@ -26,7 +26,7 @@ The goal in to create an applause meter for the project *Sondage* with a remote 
 * [Sparkfun Sound Detector - SEN-12642](https://www.digikey.ch/en/products/detail/sparkfun-electronics/SEN-12642/5762440)
 * [Red LED Diode F5](https://www.aliexpress.com/item/1005003483614644.html?spm=a2g0o.order_list.order_list_main.69.37cc1802Q5Wayy)
 * [Micro Type USB USB 2.0 Male Connector to Micro Type 2.0 Female Extension](https://www.aliexpress.com/item/1005004622194467.html?spm=a2g0o.order_list.order_list_main.64.37cc1802Q5Wayy)
-* Tchauxduino - custom leonardo ATMEGA32U4 arduino module
+* [Tchauxduino - custom leonardo ATMEGA32U4 arduino module](https://gitlab.com/bbonnal/tchauduino)
 * MOSFET
 * Power Switch
 * 27 mm wood
