@@ -27,6 +27,7 @@ The goal in to create an applause meter for the project *Sondage* with a remote 
 * [Red LED Diode F5](https://www.aliexpress.com/item/1005003483614644.html?spm=a2g0o.order_list.order_list_main.69.37cc1802Q5Wayy)
 * [Micro Type USB USB 2.0 Male Connector to Micro Type 2.0 Female Extension](https://www.aliexpress.com/item/1005004622194467.html?spm=a2g0o.order_list.order_list_main.64.37cc1802Q5Wayy)
 * Tchauxduino - custom leonardo ATMEGA32U4 arduino module
+* MOSFET
 * Power Switch
 * 27 mm wood
 * 4 mm Plywood
@@ -72,7 +73,7 @@ Fusion 360 was use to design the receiver mechanically
   <img src="./images/receiver_back.jpg" width="33%" />
 </p>
 
-All woods was processed with a laser cutter (Rayjet R500) except the 27mm spacer (gray part of the center image) with the CNC
+All woods was processed with a laser cutter (Rayjet R500) except the 27mm spacer (gray part of the center image) with the CNC. For pannels, 2mm woods is used.
 
 # Software
 The arduino code can be founded in `software` folder.
